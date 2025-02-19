@@ -1,8 +1,24 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Flixster" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- Base application theme -->
+    <style name="Base.Theme.Flixster" parent="Theme.Material3.DayNight">
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryContainer">@color/red</item>
+        <item name="colorSurface">@color/red</item>
+        <item name="android:statusBarColor">@color/red</item>
+        <item name="actionBarStyle">@style/MyActionBar</item>
+
+    </style>
+
+    <style name="MyActionBar" parent="Widget.Material3.ActionBar.Solid">
+        <item name="background">@color/red</item>
+        <item name="android:background">@color/red</item>
+        <item name="titleTextStyle">@style/MyActionBarTitle</item>
+    </style>
+
+    <style name="MyActionBarTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="Theme.Flixster" parent="Base.Theme.Flixster" />
