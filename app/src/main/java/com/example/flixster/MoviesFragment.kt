@@ -8,100 +8,108 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codepath.asynchttpclient.AsyncHttpClient
 import com.codepath.asynchttpclient.RequestParams
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import org.json.JSONObject
+import org.json.JSONArray
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import okhttp3.Headers
-import org.json.JSONArray
-
 
 private const val API_KEY = "5d1403663d86ab6d840d02c7e2a19ee0"
+private const val BASE_MOVIE_URL = "https://api.themoviedb.org/3/movie/popular"
+private const val BASE_TV_URL = "https://api.themoviedb.org/3/tv/popular"
 
-class MoviesFragment: Fragment(), OnListFragmentInteractionListener {
+class MoviesFragment : Fragment(), OnListFragmentInteractionListener {
+
+    private lateinit var progressMovies: ContentLoadingProgressBar
+    private lateinit var progressTvShows: ContentLoadingProgressBar
+    private lateinit var moviesRecyclerView: RecyclerView
+    private lateinit var tvShowsRecyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
-        val progressBar = view.findViewById<View>(R.id.progress) as ContentLoadingProgressBar
-        val recyclerView = view.findViewById<View>(R.id.list) as RecyclerView
-        val context = view.context
-        recyclerView.layoutManager = GridLayoutManager(context, 1)
-        updateAdapter(progressBar, recyclerView)
+
+        progressMovies = view.findViewById(R.id.progressMovies)
+        progressTvShows = view.findViewById(R.id.progressTvShows)
+        moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView)
+        tvShowsRecyclerView = view.findViewById(R.id.tvShowsRecyclerView)
+
+        moviesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        tvShowsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        fetchMovies()
+        fetchTvShows()
+
         return view
     }
 
-    private fun updateAdapter(progressBar: ContentLoadingProgressBar, recyclerView: RecyclerView) {
-        progressBar.show()
-
-        // Create and set up an AsyncHTTPClient() here
+    private fun fetchMovies() {
+        progressMovies.show()
         val client = AsyncHttpClient()
         val params = RequestParams()
         params["api_key"] = API_KEY
 
-        // Using the client, perform the HTTP request
-        client[
-            "https://api.themoviedb.org/3/movie/now_playing",
-            params,
-            object : JsonHttpResponseHandler()
-            {
-                /*
-                 * The onSuccess function gets called when
-                 * HTTP response status is "200 OK"
-                 */
-                override fun onSuccess(
-                    statusCode: Int,
-                    headers: Headers,
-                    json: JsonHttpResponseHandler.JSON
-                ) {
-                    // The wait for a response is over
-                    progressBar.hide()
+        client.get(BASE_MOVIE_URL, params, object : JsonHttpResponseHandler() {
+            override fun onSuccess(statusCode: Int, headers: Headers, json: JsonHttpResponseHandler.JSON) {
+                progressMovies.hide()
+                val resultsJSON: JSONArray = json.jsonObject.getJSONArray("results")
+                val gson = Gson()
+                val movieListType = object : TypeToken<List<Movie>>() {}.type
+                val movies: List<Movie> = gson.fromJson(resultsJSON.toString(), movieListType)
 
-                    //TODO - Parse JSON into Models
-                    val resultsJSON : JSONArray = json.jsonObject.getJSONArray("results")
-                    val moviesRawJSON : String = resultsJSON.toString()
+                moviesRecyclerView.adapter = MoviesRecyclerViewAdapter(movies, this@MoviesFragment)
+                Log.d("MoviesFragment", "Loaded Popular Movies: $movies")
+            }
 
-                    val gson = Gson()
-                    val arrayBookType = object : TypeToken<List<Movie>>() {}.type
-                    val models : List<Movie> = gson.fromJson(moviesRawJSON, arrayBookType)
-                    recyclerView.adapter = MoviesRecyclerViewAdapter(models,
-                        this@MoviesFragment)
-                    // Look for this in Logcat:
-                    Log.d("MoviesFragment", moviesRawJSON)
-                }
-
-                /*
-                 * The onFailure function gets called when
-                 * HTTP response status is "4XX" (eg. 401, 403, 404)
-                 */
-                override fun onFailure(
-                    statusCode: Int,
-                    headers: Headers?,
-                    errorResponse: String,
-                    t: Throwable?
-                ) {
-                    // The wait for a response is over
-                    progressBar.hide()
-
-                    // If the error is not null, log it!
-                    t?.message?.let {
-                        Log.e("MoviesFragment", errorResponse)
-                    }
-                }
-            }]
+            override fun onFailure(statusCode: Int, headers: Headers?, errorResponse: String, t: Throwable?) {
+                progressMovies.hide()
+                Log.e("MoviesFragment", "Error fetching popular movies: $errorResponse")
+            }
+        })
     }
 
-    /*`
-     * What happens when a particular movie is clicked.
-     */
-    override fun onItemClick(item: Movie) {
-        Toast.makeText(context, "test: " + item.title, Toast.LENGTH_LONG).show()
+    private fun fetchTvShows() {
+        progressTvShows.show()
+        val client = AsyncHttpClient()
+        val params = RequestParams()
+        params["api_key"] = API_KEY
+
+        client.get(BASE_TV_URL, params, object : JsonHttpResponseHandler() {
+            override fun onSuccess(statusCode: Int, headers: Headers, json: JsonHttpResponseHandler.JSON) {
+                progressTvShows.hide()
+                val resultsJSON: JSONArray = json.jsonObject.getJSONArray("results")
+                val gson = Gson()
+                val tvShowListType = object : TypeToken<List<TvShow>>() {}.type  // Correct model
+                val tvShows: List<TvShow> = gson.fromJson(resultsJSON.toString(), tvShowListType)
+
+                tvShowsRecyclerView.adapter = TvShowsRecyclerViewAdapter(tvShows, this@MoviesFragment) // Correct Adapter
+                Log.d("MoviesFragment", "Loaded Popular TV Shows: $tvShows")
+            }
+
+            override fun onFailure(statusCode: Int, headers: Headers?, errorResponse: String, t: Throwable?) {
+                progressTvShows.hide()
+                Log.e("MoviesFragment", "Error fetching popular TV shows: $errorResponse")
+            }
+        })
     }
 
+    override fun onItemClick(item: Any) {
+        when (item) {
+            is Movie -> {
+                Toast.makeText(context, "Movie: ${item.title}", Toast.LENGTH_SHORT).show()
+            }
+            is TvShow -> {
+                Toast.makeText(context, "TV Show: ${item.title}", Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                Log.e("MoviesFragment", "Unknown item clicked")
+            }
+        }
+    }
 }

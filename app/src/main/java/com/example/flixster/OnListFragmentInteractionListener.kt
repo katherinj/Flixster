@@ -7,5 +7,5 @@ package com.example.flixster
  * In this app, it's implemented by [MoviesFragment]
  */
 interface OnListFragmentInteractionListener {
-    fun onItemClick(item: Movie)
+    fun onItemClick(item: Any)
 }
