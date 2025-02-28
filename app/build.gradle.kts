@@ -48,5 +48,5 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
     implementation(libs.codepath.asynchttpclient)
-
+    implementation(libs.kotlinx.serialization.json)
 }

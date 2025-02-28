@@ -1,27 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp"
-    android:gravity="center_horizontal">
+    android:layout_margin="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#F9F9F9">
 
-    <ImageView
-        android:id="@+id/movie_poster"
-        android:layout_width="120dp"
-        android:layout_height="180dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <ImageView
+        android:id="@+id/poster"
+        android:transitionName="mediaImageTransition"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scaleType="centerCrop"
-        android:contentDescription="Movie Poster"/>
+        android:clipToOutline="true"
+        app:layout_constraintDimensionRatio="2:3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.35" />
 
     <TextView
-        android:id="@+id/movie_title"
-        android:layout_width="wrap_content"
+        android:id="@+id/title"
+        android:transitionName="mediaTitleTransition"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Movie Title"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
         android:maxLines="2"
-        android:ellipsize="end"/>
-</LinearLayout>
+        android:text="Title"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:lineSpacingExtra="4dp"
+        android:textColor="@android:color/black"
+        android:fontFamily="serif"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/poster"
+        app:layout_constraintTop_toTopOf="@id/poster"
+        app:layout_constraintBottom_toTopOf="@id/description" />
+
+        <TextView
+            android:id="@+id/release_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-light"
+            android:lineSpacingExtra="1dp"
+            android:text="February 27, 2025"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/poster"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+        android:id="@+id/description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="4"
+        android:text="Description"
+        android:textSize="14sp"
+        android:lineSpacingExtra="4dp"
+        android:textColor="@android:color/darker_gray"
+        android:fontFamily="sans-serif-light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/poster"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

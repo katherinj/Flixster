@@ -15,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Flixster"
         tools:targetApi="31">
+        <activity android:name=".DetailActivity"
+            android:exported="true">
+        </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

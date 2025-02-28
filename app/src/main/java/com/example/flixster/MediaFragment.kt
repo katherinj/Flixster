@@ -1,11 +1,12 @@
 package com.example.flixster
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,11 +23,12 @@ private const val API_KEY = "5d1403663d86ab6d840d02c7e2a19ee0"
 private const val BASE_MOVIE_URL = "https://api.themoviedb.org/3/movie/popular"
 private const val BASE_TV_URL = "https://api.themoviedb.org/3/tv/popular"
 
-class MoviesFragment : Fragment(), OnListFragmentInteractionListener {
+class MediaFragment : Fragment(), OnListFragmentInteractionListener {
 
     private lateinit var progressMovies: ContentLoadingProgressBar
-    private lateinit var progressTvShows: ContentLoadingProgressBar
     private lateinit var moviesRecyclerView: RecyclerView
+
+    private lateinit var progressTvShows: ContentLoadingProgressBar
     private lateinit var tvShowsRecyclerView: RecyclerView
 
     override fun onCreateView(
@@ -40,8 +42,9 @@ class MoviesFragment : Fragment(), OnListFragmentInteractionListener {
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView)
         tvShowsRecyclerView = view.findViewById(R.id.tvShowsRecyclerView)
 
-        moviesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        tvShowsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        moviesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,
+            false)
+        tvShowsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         fetchMovies()
         fetchTvShows()
@@ -63,13 +66,11 @@ class MoviesFragment : Fragment(), OnListFragmentInteractionListener {
                 val movieListType = object : TypeToken<List<Movie>>() {}.type
                 val movies: List<Movie> = gson.fromJson(resultsJSON.toString(), movieListType)
 
-                moviesRecyclerView.adapter = MoviesRecyclerViewAdapter(movies, this@MoviesFragment)
-                Log.d("MoviesFragment", "Loaded Popular Movies: $movies")
+                moviesRecyclerView.adapter = MoviesRecyclerViewAdapter(movies, this@MediaFragment)
             }
 
             override fun onFailure(statusCode: Int, headers: Headers?, errorResponse: String, t: Throwable?) {
                 progressMovies.hide()
-                Log.e("MoviesFragment", "Error fetching popular movies: $errorResponse")
             }
         })
     }
@@ -85,31 +86,56 @@ class MoviesFragment : Fragment(), OnListFragmentInteractionListener {
                 progressTvShows.hide()
                 val resultsJSON: JSONArray = json.jsonObject.getJSONArray("results")
                 val gson = Gson()
-                val tvShowListType = object : TypeToken<List<TvShow>>() {}.type  // Correct model
+                val tvShowListType = object : TypeToken<List<TvShow>>() {}.type
                 val tvShows: List<TvShow> = gson.fromJson(resultsJSON.toString(), tvShowListType)
 
-                tvShowsRecyclerView.adapter = TvShowsRecyclerViewAdapter(tvShows, this@MoviesFragment) // Correct Adapter
-                Log.d("MoviesFragment", "Loaded Popular TV Shows: $tvShows")
+                tvShowsRecyclerView.adapter = TvShowsRecyclerViewAdapter(tvShows, this@MediaFragment)
+                Log.d("MediaFragment", "Loaded Popular TV Shows: $tvShows")
             }
 
             override fun onFailure(statusCode: Int, headers: Headers?, errorResponse: String, t: Throwable?) {
                 progressTvShows.hide()
-                Log.e("MoviesFragment", "Error fetching popular TV shows: $errorResponse")
+                Log.e("MediaFragment", "Error fetching popular TV shows: $errorResponse")
             }
         })
     }
 
-    override fun onItemClick(item: Any) {
+    override fun onItemClick(item: Any, sharedView: View) {
+        val context = requireContext()
+
+        val intent = Intent(context, DetailActivity::class.java)
+
         when (item) {
             is Movie -> {
-                Toast.makeText(context, "Movie: ${item.title}", Toast.LENGTH_SHORT).show()
+                intent.putExtra("title", item.title)
+                intent.putExtra("image_url", item.posterPath)
+                intent.putExtra("transition_name", sharedView.transitionName)
+                intent.putExtra(MEDIA_EXTRA, item)
+
+
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    requireActivity(),
+                    sharedView, sharedView.transitionName
+                )
+
+                startActivity(intent, options.toBundle())
             }
+
             is TvShow -> {
-                Toast.makeText(context, "TV Show: ${item.title}", Toast.LENGTH_SHORT).show()
-            }
-            else -> {
-                Log.e("MoviesFragment", "Unknown item clicked")
+                intent.putExtra("title", item.title)
+                intent.putExtra("image_url", item.posterPath)
+                intent.putExtra("transition_name", sharedView.transitionName)
+                intent.putExtra(MEDIA_EXTRA, item)
+
+
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    requireActivity(),
+                    sharedView, sharedView.transitionName
+                )
+
+                startActivity(intent, options.toBundle())
             }
         }
     }
+
 }

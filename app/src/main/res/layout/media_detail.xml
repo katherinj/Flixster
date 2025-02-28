@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detailLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".DetailActivity">
+
+    <ImageView
+        android:id="@+id/mediaImage"
+        android:layout_width="0dp"
+        android:layout_height="260dp"
+        android:layout_marginTop="16dp"
+        android:adjustViewBounds="true"
+        android:clipToOutline="true"
+        android:contentDescription="Article Image"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars"
+        android:transitionName="mediaImageTransition" />
+
+    <TextView
+        android:id="@+id/mediaTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:text="Title"
+        android:fontFamily="serif"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:lineSpacingExtra="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mediaImage"
+        android:transitionName="mediaTitleTransition"/>
+
+    <TextView
+        android:id="@+id/releaseDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:text="Release Date:"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mediaTitle" />
+
+    <TextView
+        android:id="@+id/release_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:text="YYYY-MM-DD"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toEndOf="@id/releaseDateLabel"
+        app:layout_constraintTop_toBottomOf="@+id/mediaTitle" />
+
+    <TextView
+        android:id="@+id/popularityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
+        android:text="Popularity:"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/releaseDateLabel" />
+
+    <TextView
+        android:id="@+id/popularity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="0.0"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/popularityLabel"
+        app:layout_constraintTop_toBottomOf="@+id/release_date" />
+
+    <TextView
+        android:id="@+id/voteAverageLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
+        android:text="Vote Average:"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/popularityLabel" />
+
+    <TextView
+        android:id="@+id/voteAverage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="0.0"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/voteAverageLabel"
+        app:layout_constraintTop_toBottomOf="@+id/popularity" />
+
+    <TextView
+        android:id="@+id/voteCountLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
+        android:text="Vote Count:"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/voteAverageLabel" />
+
+    <TextView
+        android:id="@+id/voteCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="0"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/voteCountLabel"
+        app:layout_constraintTop_toBottomOf="@+id/voteAverage" />
+
+    <TextView
+        android:id="@+id/originalLanguageLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
+        android:text="Original Language:"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/voteCountLabel" />
+
+    <TextView
+        android:id="@+id/originalLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="en"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/originalLanguageLabel"
+        app:layout_constraintTop_toBottomOf="@+id/voteCount" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:text="Description"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/originalLanguage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

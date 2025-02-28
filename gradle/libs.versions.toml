@@ -12,6 +12,7 @@ constraintlayout = "2.2.0"
 gson = "2.10.1"
 glide = "4.12.0"
 asynchttpclient = "2.2.0"
+kotlinx = "1.3.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -26,6 +27,7 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson"}
 glide = {group = "com.github.bumptech.glide", name = "glide", version.ref = "glide"}
 glide-compiler = {group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide"}
 codepath-asynchttpclient = {group = "com.codepath.libraries", name = "asynchttpclient", version.ref = "asynchttpclient"}
+kotlinx-serialization-json = {group = "org.jetbrains.kotlinx", name="kotlinx-serialization-json", version.ref = "kotlinx"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

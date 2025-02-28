@@ -1,21 +1,36 @@
 package com.example.flixster
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-class Movie {
-    @JvmField
+data class Movie(
+    @SerializedName("id")
+    val id: Int?,
+
     @SerializedName("title")
-    var title: String? = null
+    val title: String?,
 
-    @JvmField
     @SerializedName("overview")
-    var description: String? = null
+    val description: String?,
 
-    @JvmField
+    @SerializedName("release_date")
+    val releaseDate: String?,
+
     @SerializedName("poster_path")
-    var posterPath: String? = null
+    val posterPath: String?,
 
-    @JvmField
     @SerializedName("backdrop_path")
-    var backdropPath: String? = null
-}
+    val backdropPath: String?,
+
+    @SerializedName("popularity")
+    val popularity: Double?,
+
+    @SerializedName("vote_average")
+    val voteAverage: Double?,
+
+    @SerializedName("vote_count")
+    val voteCount: Int?,
+
+    @SerializedName("original_language")
+    val originalLanguage: String?,
+) : Serializable
